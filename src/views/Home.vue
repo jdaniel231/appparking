@@ -1,7 +1,6 @@
 <template>
-  <div class="home">
-   <h1>Home</h1>
-  </div>
+  
+  <h1>Cadastro de veiculos</h1>
 </template>
 
 <script>

@@ -1,21 +1,52 @@
 <template>
-  <div id="nav"  >
+  <div id="nav">
 
-    <router-link to="/">
-      <img src="" id="logo">
+    <router-link to="/" id="logo-url">
+      <img :src="logo" :alt="alt" id="logo">
     </router-link>
 
-    <router-link to="/">Home</router-link> |
+    <router-link to="/">Home</router-link> 
     <router-link to="/cadastro">Cadastro</router-link>
   </div>
 </template>
 
 <script>
+
 export default {
-  name: "Navbar"
+  name: "Navbar",
+  props: ["logo", "alt" ]
 }
 </script>
 
 <style scoped>
+ #nav {
+  background-color: #3f7fbf;
+  padding: 15px 50px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+ }
 
+ #nav #logo-url{
+  margin: auto;
+  margin-left: 0;
+ }
+
+ #logo{
+  width: 40px;
+  height: 40px;
+ }
+
+ #nav a{
+  color: #fff;
+  text-decoration: none;
+  margin: 12px;
+  transition: .2s;
+  font-size: 20px;
+ }
+
+ #nav a:hover{
+  color: red;
+  border-bottom: 2px solid red;
+ }
 </style>

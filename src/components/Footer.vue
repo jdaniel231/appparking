@@ -1,6 +1,7 @@
 <template>
-
-  <p>Sistema de Estacionamento 2023 - Desenvolvimento por Joao Daniel</p>
+  <footer id="footer">
+    <p>Sistema de Estacionamento 2023 &copy; - Desenvolvimento por Joao Daniel</p>
+  </footer>
 </template>
 
 <script>
@@ -10,5 +11,13 @@ export default {
 </script>
 
 <style scoped>
-
+  #footer{
+    height: 200px;
+    background-color: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
 </style>
