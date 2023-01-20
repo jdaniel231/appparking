@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="carro-form">
+    <form id="carro-form" @submit="save">
       <div class="input-container">
         <label for="nome">Nome da pessoa: </label>
         <input type="text" id="nome" v-model="nome" placeholder="Informe o seu nome">
@@ -20,13 +20,51 @@
       <div class="input-container">
         <input type="submit" class="submit-btn" value="Cadastrar" >
       </div>
-    </div>
+    </form>
   </div>
 </template>
 
 <script>
 export default {
- 
+  name: 'CarroForm',
+  data(){
+    return{
+      nome: null,
+      nomeCarro: null,
+      placaCarro: null,
+      hora: null,
+      msg: null,
+    }
+  },
+  methods: {
+    async save(e){
+      e.preventDefault();
+      console.log("Cadastro com sucesso!")
+      const data = {
+        nome: this.nome,
+        nomeCarro: this.nomeCarro,
+        placaCarro: this.placaCarro,
+        hora: this.hora,
+        status: "Solicitado"
+      }
+      // console.log(data);
+
+      const dataJson = JSON.stringify(data);
+
+      const req = await fetch('http://localhost:3000/carros', {
+        method: "POST",
+        headers: {"Content-Type" : "application/json"},
+        body: dataJson
+      });
+      const res = await req.json();
+      console.log(res);
+
+      this.nome = '';
+      this.nomeCarro = '';
+      this.placaCarro = '';
+      this.hora = '';
+    }
+  }
 }
 </script>
 
