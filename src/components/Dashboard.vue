@@ -1,5 +1,9 @@
 <template>
+  
+  
+
   <div id="carro-table">
+    <Mensagem :msg="msg" v-show="msg" />
     <div>
       <div id="carro-table-heading">
         <div class="order-id">#</div>
@@ -12,19 +16,22 @@
     </div>
 
     <div id="carro-table-rows">
-      <div class="carro-table-row">
-        <div class="order-number">1</div>
-        <div>Daniel</div>
-        <div>Gol</div>
-        <div>OIC2725</div>
-        <div>08:00</div>
+      <div class="carro-table-row" v-for='carro in carros' :key=carro.id >
+        <div class="order-number">{{ carro.id}}</div>
+        <div>{{carro.nome}}</div>
+        <div>{{carro.nomeCarro}}</div>
+        <div>{{carro.placaCarro}}</div>
+        <div>{{carro.hora}}</div>
 
         <div>
-          <select name="status" id="" class="status">
+          <select name="status" id="" class="status" @change="updateCarro($event, carro.id)">
             <option value="">Status do carro</option>
+            <option :value="statu.tipo" v-for="statu in status" :key='statu.tipo' :selected='carro.status == statu.tipo'>
+              {{statu.tipo}}
+            </option>
           </select>
 
-          <button class="delete-btn">Excluir</button>
+          <button class="delete-btn" @click="trash(carro.id)">Excluir</button>
         </div>
       </div>
     </div>
@@ -33,8 +40,64 @@
 </template>
 
 <script>
+import Mensagem from './Mensagem.vue';
+
 export default {
-  name: "Dashboard"
+  name: "Dashboard",
+  data(){
+    return{
+      carros: null,
+      carros_id: null,
+      status: [],
+      msg: null
+    }
+  },
+  methods: {
+    async getCadastro() {
+      const req = await fetch('http://localhost:3000/carros');
+      const data = await req.json();
+
+      this.carros = data;
+      this.getStatus();
+    },
+
+     async getStatus() {
+      const req = await fetch('http://localhost:3000/status');
+      const data = await req.json();
+      this.status = data;
+    },
+    async trash(id){
+      const req = await fetch(`http://localhost:3000/carros/${id}`,{
+        method: "DELETE",
+      });
+      const data = await req.json();
+      this.msg = `Excluido com sucesso`;
+      setTimeout(() => this.msg = "", 3000);
+      this.getCadastro();
+    },
+    
+   async updateCarro(event, id){
+        const opcoes = event.target.value;
+        const dataJson = JSON.stringify({ status: opcoes }); // pega o ID do STATUS e CARROS
+        const req =  await fetch(`http://localhost:3000/carros/${id}`, {
+            method: "PATCH", // atualiza somente o ID do STATUS
+            headers: { "Content-Type" : "application/json" },
+            body: dataJson
+        });
+        const res = await req.json();
+          //  Mensagem de cadastro de carro
+        this.msg = `Carro do: ${res.nome} foi atualizado para ${res.status} . Obrigado `;
+        // Limpar a Mensagem após um tempo
+        setTimeout(() => this.msg = "", 3000)
+        console.log(res);
+        
+    }
+  },
+
+  mounted(){
+    this.getCadastro();
+  },
+  components: { Mensagem }
 
 }
 </script>
