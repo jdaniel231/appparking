@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Mensagem :msg="msg" v-show="msg" />
     <form id="carro-form" @submit="save">
       <div class="input-container">
         <label for="nome">Nome da pessoa: </label>
@@ -25,6 +26,8 @@
 </template>
 
 <script>
+import Mensagem from './Mensagem.vue';
+
 export default {
   name: 'CarroForm',
   data(){
@@ -36,6 +39,7 @@ export default {
       msg: null,
     }
   },
+  components:{Mensagem},
   methods: {
     async save(e){
       e.preventDefault();
@@ -58,7 +62,8 @@ export default {
       });
       const res = await req.json();
       console.log(res);
-
+      this.msg = `Cadastro com sucesso`
+      setTimeout(() => this.msg = '', 3000)
       this.nome = '';
       this.nomeCarro = '';
       this.placaCarro = '';
